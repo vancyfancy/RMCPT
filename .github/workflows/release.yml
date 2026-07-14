@@ -21,9 +21,11 @@ jobs:
           - macos-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Build
         run: cargo build --release
@@ -32,18 +34,20 @@ jobs:
         shell: bash
         run: |
           mkdir dist
-          
+
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-            cp target/release/RMCPT.exe dist/
+            cp target/release/RMCPT.exe dist/RMCPT-windows.exe
+          elif [[ "${{ runner.os }}" == "macOS" ]]; then
+            cp target/release/RMCPT dist/RMCPT-macos
           else
-            cp target/release/RMCPT dist/
+            cp target/release/RMCPT dist/RMCPT-linux
           fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: RMCPT-${{ runner.os }}
-          path: dist/
+          path: dist/*
 
 
   release:
@@ -51,7 +55,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
         with:
           path: dist
 
