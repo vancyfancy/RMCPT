@@ -15,4 +15,4 @@ Make a folder called `dependencies` and put `apktool.jar` and `uber-apk-signer.j
 
 Usage
 ---
-```RCMPT --platform <android/ios> --base <APK/XAPK/IPA> --address <10 character domain>```
+```RMCPT --platform <android/ios> --base <APK/XAPK/IPA> --address <10 character domain>```
